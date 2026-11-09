@@ -10,7 +10,7 @@ import type { ProviderResult } from "@/lib/providers/types";
 const FIXED_SUBMITTED_AT = "2026-11-09T22:00:00.000Z";
 
 export async function getPreviewResults(): Promise<ProviderResult[]> {
-  const ids = ["harbourline", "kestrel", "banksia", "northgate", "fairlight", "ironbark"];
+  const ids = ["harbourline", "jarrah", "banksia", "sturt-hume", "fairlight", "ironbark"];
   const results = await Promise.all(
     ids.map((id) =>
       createDemoInsurerAdapter(PROVIDER_DEFINITIONS[id], getDemoPersonality(id)).submit({

@@ -23,22 +23,18 @@ export default function LandingPage() {
         </div>
 
         {/* Artwork + proof card */}
-        <div className="relative mt-2 flex min-h-0 flex-1 flex-col justify-end lg:mt-0 lg:h-[min(640px,76vh)] lg:flex-none lg:justify-center">
+        <div className="relative mt-1 flex min-h-0 flex-1 flex-col justify-center gap-2 md:gap-6 lg:mt-0 lg:h-[min(640px,76vh)] lg:flex-none lg:justify-center lg:gap-0">
           <div className="rise relative min-h-0 flex-1 lg:flex-none" style={{ animationDelay: "140ms" }}>
-            {/* Mobile: artwork cropped to the car, bleeding past the right edge */}
-            <div className="relative mx-auto h-full w-full overflow-hidden lg:hidden">
-              <HeroArt
-                priority
-                sizes="100vw"
-                className="absolute left-1/2 top-1/2 w-[132%] max-w-none -translate-x-[47%] -translate-y-[50%]"
-              />
+            {/* Mobile: the whole car, framed as a band on its wash. Cropped only above and below. */}
+            <div className="relative -mx-4 h-full min-h-[120px] max-h-[230px] md:max-h-[440px] lg:hidden">
+              <HeroArt priority fill sizes="100vw" className="object-cover object-[50%_60%]" />
             </div>
             {/* Desktop: full composition */}
             <div className="relative hidden w-[106%] lg:block lg:-mr-[6%]">
               <HeroArt priority sizes="(min-width: 1024px) 60vw, 100vw" />
             </div>
           </div>
-          <div className="rise relative z-10 mt-1 w-full lg:hidden" style={{ animationDelay: "260ms" }}>
+          <div className="rise relative z-10 w-full shrink-0 md:mx-auto md:max-w-[560px] lg:hidden" style={{ animationDelay: "260ms" }}>
             <QuoteStrip />
           </div>
         </div>

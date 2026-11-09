@@ -17,7 +17,7 @@ export const PROVIDER_DEFINITIONS: Record<string, ProviderDefinition> = {
   harbourline: {
     id: "harbourline",
     name: "Harbourline",
-    underwriter: "Harbourline General Insurance Ltd",
+    underwriter: "Harbourline General Insurance Limited",
     integration: "insurer_api",
     connected: true,
     demo: true,
@@ -26,22 +26,22 @@ export const PROVIDER_DEFINITIONS: Record<string, ProviderDefinition> = {
     accentHue: 205,
     monogram: "H",
   },
-  kestrel: {
-    id: "kestrel",
-    name: "Kestrel Mutual",
-    underwriter: "Kestrel Mutual Ltd",
+  jarrah: {
+    id: "jarrah",
+    name: "Jarrah Mutual",
+    underwriter: "Jarrah Mutual Limited",
     integration: "insurer_api",
     connected: true,
     demo: true,
     tagline: "Lean cover at a lean price",
     integrationNote: "Structured quote API. Market value only.",
     accentHue: 28,
-    monogram: "K",
+    monogram: "J",
   },
   banksia: {
     id: "banksia",
     name: "Banksia Cover",
-    underwriter: "Banksia Insurance Australia Ltd",
+    underwriter: "Banksia Insurance Australia Limited",
     integration: "insurer_api",
     connected: true,
     demo: true,
@@ -50,22 +50,22 @@ export const PROVIDER_DEFINITIONS: Record<string, ProviderDefinition> = {
     accentHue: 345,
     monogram: "B",
   },
-  northgate: {
-    id: "northgate",
-    name: "Northgate & Pryor",
-    underwriter: "Panel of underwriters via broker",
+  "sturt-hume": {
+    id: "sturt-hume",
+    name: "Sturt & Hume",
+    underwriter: "Panel of Australian underwriters via broker",
     integration: "broker_api",
     connected: true,
     demo: true,
     tagline: "Broker-placed cover from a panel",
     integrationNote: "Authorised broker integration. Slower, returns the broker's best panel offer.",
     accentHue: 262,
-    monogram: "N",
+    monogram: "S",
   },
   wattle: {
     id: "wattle",
     name: "Wattle & Co",
-    underwriter: "Wattle & Co Insurance Ltd",
+    underwriter: "Wattle & Co Insurance Limited",
     integration: "insurer_api",
     connected: true,
     demo: true,
@@ -89,7 +89,7 @@ export const PROVIDER_DEFINITIONS: Record<string, ProviderDefinition> = {
   ironbark: {
     id: "ironbark",
     name: "Ironbark Direct",
-    underwriter: "Ironbark Direct Insurance Ltd",
+    underwriter: "Ironbark Direct Insurance Limited",
     integration: "insurer_api",
     connected: true,
     demo: true,
@@ -98,10 +98,10 @@ export const PROVIDER_DEFINITIONS: Record<string, ProviderDefinition> = {
     accentHue: 10,
     monogram: "I",
   },
-  pelorus: {
-    id: "pelorus",
-    name: "Pelorus Insurance",
-    underwriter: "Pelorus Insurance Ltd",
+  daintree: {
+    id: "daintree",
+    name: "Daintree Insurance",
+    underwriter: "Daintree Insurance Limited",
     integration: "browser_workflow",
     connected: true,
     demo: true,
@@ -109,7 +109,7 @@ export const PROVIDER_DEFINITIONS: Record<string, ProviderDefinition> = {
     integrationNote:
       "Contractually approved browser workflow. Stops at the provider's identity check and hands over to you.",
     accentHue: 190,
-    monogram: "P",
+    monogram: "D",
   },
 };
 
@@ -168,7 +168,7 @@ const PERSONALITIES: Record<string, DemoPersonality> = {
     latencyMs: [1800, 2600],
     outcome: () => ({ kind: "quoted" }),
   },
-  kestrel: {
+  jarrah: {
     priceFactor: 0.84,
     excessPolicy: "minimum-1000",
     offersAgreedValue: false,
@@ -185,7 +185,7 @@ const PERSONALITIES: Record<string, DemoPersonality> = {
     latencyMs: [900, 1400],
     outcome: () => ({ kind: "quoted" }),
     notes: (app) =>
-      app.cover.valuation === "agreed" ? ["Kestrel offers market value only; your agreed value preference could not be met."] : [],
+      app.cover.valuation === "agreed" ? ["Jarrah offers market value only; your agreed value preference could not be met."] : [],
   },
   banksia: {
     priceFactor: 1.24,
@@ -208,7 +208,7 @@ const PERSONALITIES: Record<string, DemoPersonality> = {
     latencyMs: [2400, 3400],
     outcome: () => ({ kind: "quoted" }),
   },
-  northgate: {
+  "sturt-hume": {
     priceFactor: 0.95,
     excessPolicy: "minimum-750",
     offersAgreedValue: true,
@@ -293,7 +293,7 @@ const PERSONALITIES: Record<string, DemoPersonality> = {
       return { kind: "quoted" };
     },
   },
-  pelorus: {
+  daintree: {
     priceFactor: 0.97,
     excessPolicy: "honour",
     offersAgreedValue: true,
@@ -306,7 +306,7 @@ const PERSONALITIES: Record<string, DemoPersonality> = {
     latencyMs: [3600, 4600],
     outcome: () => ({
       kind: "manual",
-      reason: "Pelorus requires you to verify your identity on its own site before it releases a price.",
+      reason: "Daintree requires you to verify your identity on its own site before it releases a price.",
       instruction:
         "The approved workflow pre-filled your application and paused at the identity check. You complete that step yourself, then the quote is captured.",
     }),
