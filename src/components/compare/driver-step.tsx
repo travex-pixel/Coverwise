@@ -56,7 +56,7 @@ export function DriverStep() {
   return (
     <StepFrame
       step="driver"
-      subtitle="Details about the main driver. We only ask follow-up questions when your answer makes them relevant."
+      subtitle="The main driver. Follow-ups only when relevant."
       onBack={nav.goPrev}
       formId="driver-form"
     >

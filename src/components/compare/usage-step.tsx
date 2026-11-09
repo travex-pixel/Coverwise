@@ -57,7 +57,7 @@ export function UsageStep() {
   return (
     <StepFrame
       step="usage"
-      subtitle="Where the car is garaged and how much it's driven matter more to insurers than almost anything else."
+      subtitle="Where it's kept and how far it goes."
       onBack={nav.goPrev}
       formId="usage-form"
     >

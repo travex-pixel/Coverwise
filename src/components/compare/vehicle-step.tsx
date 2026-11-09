@@ -15,6 +15,7 @@ import { AU_STATES, vehicleSchema, type Vehicle, type VehicleInput } from "@/lib
 import { useApplication, useStepNavigation } from "@/lib/application/store";
 import type { RegistrationLookupResult } from "@/lib/registration/lookup";
 import { useCurrentYear } from "@/lib/hooks/use-media-query";
+import { VehicleAside } from "@/components/compare/vehicle-aside";
 import { MAKE_NAMES, findMake, findModel, yearsFor } from "@/lib/vehicles/data";
 
 const OTHER = "__other__";
@@ -87,9 +88,10 @@ export function VehicleStep() {
   return (
     <StepFrame
       step="vehicle"
-      subtitle="Registration is optional — it only helps us pre-fill. Everything else takes about twenty seconds."
+      subtitle="Registration is optional. The rest takes about twenty seconds."
       onBack={nav.goPrev}
       formId="vehicle-form"
+      aside={<VehicleAside make={make} model={model} year={watch("year") as number | undefined} variant={variant} demo={draft.demo} />}
       headerAction={
         !draft.demo ? (
           <Button

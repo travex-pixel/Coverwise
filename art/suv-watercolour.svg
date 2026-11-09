@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700">
+  <defs>
+    <filter id="paper" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.42  0 0 0 0 0.40  0 0 0 0 0.34  0 0 0 -0.55 0.48"/>
+    </filter>
+    <!-- Granulation inside a wash: gentle displacement + speckle -->
+    <filter id="wash" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018 0.03" numOctaves="3" seed="3" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="5" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="2" seed="11" result="g"/>
+      <!-- Granulation: a light grey speckle between 0.82 and 1.0, masked to the wash -->
+      <feColorMatrix in="g" type="matrix" values="0.18 0 0 0 0.82  0.18 0 0 0 0.82  0.18 0 0 0 0.82  0 0 0 0 1" result="gm"/>
+      <feComposite in="gm" in2="d" operator="in" result="speck"/>
+      <feBlend in="d" in2="speck" mode="multiply"/>
+    </filter>
+    <!-- Loose bleeding edge for free strokes -->
+    <filter id="bleed" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="4" seed="5" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="28" xChannelSelector="R" yChannelSelector="B"/>
+      <feGaussianBlur stdDeviation="0.8"/>
+    </filter>
+    <filter id="bleedSoft" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="3" seed="9" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="70" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <!-- Pigment pooling at the silhouette boundary -->
+    <filter id="edge" x="-5%" y="-5%" width="110%" height="110%">
+      <feMorphology operator="erode" radius="2.2" in="SourceAlpha" result="er"/>
+      <feComposite in="SourceAlpha" in2="er" operator="out" result="ring"/>
+      <feGaussianBlur in="ring" stdDeviation="1.1" result="rb"/>
+      <feFlood flood-color="#0b1a12" flood-opacity="0.5" result="c"/>
+      <feComposite in="c" in2="rb" operator="in" result="edge"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="2" result="t"/>
+      <feDisplacementMap in="edge" in2="t" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#86a391"/>
+      <stop offset="0.22" stop-color="#5d8069"/>
+      <stop offset="0.55" stop-color="#3b5f4c"/>
+      <stop offset="1" stop-color="#27483a"/>
+    </linearGradient>
+    <linearGradient id="bodyHi" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f5f3ed" stop-opacity="0"/>
+      <stop offset="0.3" stop-color="#f5f3ed" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#e8e0c8" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#f5f3ed" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#eef0ea"/>
+      <stop offset="0.4" stop-color="#c9d2cb"/>
+      <stop offset="0.75" stop-color="#93a498"/>
+      <stop offset="1" stop-color="#5f7468"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a5b4a5" stop-opacity="0"/>
+      <stop offset="0.18" stop-color="#a5b4a5" stop-opacity="0.6"/>
+      <stop offset="0.55" stop-color="#b9b79a" stop-opacity="0.5"/>
+      <stop offset="0.85" stop-color="#c7b58d" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#c7b58d" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="tyre" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#2a2f2a"/>
+      <stop offset="0.62" stop-color="#191e1a"/>
+      <stop offset="1" stop-color="#0d110e"/>
+    </radialGradient>
+    <radialGradient id="rim" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#e6e8e3"/>
+      <stop offset="0.6" stop-color="#aeb4ad"/>
+      <stop offset="1" stop-color="#7c837c"/>
+    </radialGradient>
+
+    <!-- SUV silhouette: short bonnet, upright screen, boxy greenhouse, tall body -->
+    <path id="body" d="
+      M146 512
+      C134 494 128 464 138 440
+      C146 422 160 410 186 402
+      C240 388 300 378 400 372
+      C428 370 438 366 448 358
+      C470 326 500 286 540 262
+      C560 250 578 246 600 244
+      C700 238 820 238 900 248
+      C928 252 950 268 968 292
+      C990 322 1014 362 1034 398
+      C1050 428 1064 456 1064 484
+      C1064 500 1054 510 1036 512
+      L930 514
+      C922 468 892 436 850 436
+      C808 436 778 468 770 514
+      L410 514
+      C402 468 372 436 330 436
+      C288 436 258 468 250 514
+      Z"/>
+    <clipPath id="bodyClip"><use href="#body"/></clipPath>
+  </defs>
+
+  <!-- Scene washes: a loose horizon of sage, a warm champagne light, lots of paper left white -->
+  <g>
+    <path d="M150 470 C300 436 440 438 600 442 C780 446 940 426 1060 452 L1060 480 C940 470 780 488 600 484 C440 480 300 472 150 500 Z" fill="#a5b4a5" opacity="0.3" filter="url(#bleedSoft)"/>
+    <ellipse cx="940" cy="310" rx="170" ry="100" fill="#c7b58d" opacity="0.2" filter="url(#bleedSoft)"/>
+    <ellipse cx="300" cy="340" rx="170" ry="70" fill="#d7dad5" opacity="0.45" filter="url(#bleedSoft)"/>
+  </g>
+
+  <!-- Ground wash -->
+  <path d="M90 566 C240 548 440 552 600 556 C800 560 980 548 1120 566 C1126 588 1110 604 1080 606 C900 616 620 622 360 614 C240 610 130 606 100 592 Z" fill="url(#ground)" filter="url(#bleed)"/>
+  <path d="M150 568 C380 560 660 562 1060 562" stroke="#7f8f80" stroke-opacity="0.5" stroke-width="3" fill="none" filter="url(#bleed)"/>
+
+  <!-- Wet-in-wet bloom beneath the body -->
+  <path d="M200 540 C360 520 560 526 700 530 C840 534 960 522 1060 536 C1040 560 900 572 700 572 C500 572 320 566 200 556 Z" fill="#a5b4a5" opacity="0.35" filter="url(#bleedSoft)"/>
+  <!-- Cast shadow -->
+  <ellipse cx="600" cy="552" rx="450" ry="20" fill="#2a312c" opacity="0.38" filter="url(#soft)"/>
+  <ellipse cx="600" cy="546" rx="420" ry="9" fill="#14241d" opacity="0.55" filter="url(#soft)"/>
+
+  <!-- Body: first wash -->
+  <use href="#body" fill="url(#bodyGrad)" filter="url(#wash)"/>
+  <!-- Second wet-in-wet pass: lower body deepens, slight offset -->
+  <g clip-path="url(#bodyClip)">
+    <path d="M120 452 C300 446 700 444 1080 452 L1080 530 L120 530 Z" fill="#1b3027" opacity="0.45" filter="url(#bleedSoft)"/>
+    <!-- Lower cladding -->
+    <path d="M120 488 C300 486 700 486 1080 488 L1080 530 L120 530 Z" fill="#0f1a15" opacity="0.6" filter="url(#bleed)"/>
+    <!-- Paper-white light on the bonnet and shoulder: a confident single stroke -->
+    <ellipse cx="520" cy="392" rx="300" ry="34" fill="#f5f3ed" opacity="0.26" filter="url(#soft)"/>
+    <ellipse cx="300" cy="396" rx="140" ry="18" fill="#f5f3ed" opacity="0.3" filter="url(#soft)"/>
+    <path d="M190 392 C300 382 420 377 540 377 L540 382 C420 384 300 390 196 400 Z" fill="#f5f3ed" opacity="0.7" filter="url(#soft)"/>
+    <path d="M200 390 C300 382 420 378 530 378" stroke="#f5f3ed" stroke-opacity="0.75" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- Wet-in-wet pigment pooling on the doors and rear quarter -->
+    <ellipse cx="660" cy="470" rx="110" ry="28" fill="#17342a" opacity="0.35" filter="url(#bleedSoft)"/>
+    <ellipse cx="960" cy="440" rx="70" ry="60" fill="#17342a" opacity="0.3" filter="url(#bleedSoft)"/>
+    <ellipse cx="250" cy="460" rx="70" ry="26" fill="#17342a" opacity="0.25" filter="url(#bleedSoft)"/>
+    <!-- Bonnet shut line -->
+    <path d="M440 372 C448 400 452 430 450 462" stroke="#0f1a15" stroke-opacity="0.35" stroke-width="2" fill="none"/>
+    <!-- Grille -->
+    <path d="M138 452 C146 448 156 446 168 446 L166 468 C154 468 146 470 140 474 Z" fill="#0f1a15" opacity="0.5" filter="url(#soft)"/>
+    <!-- Roof light -->
+    <path d="M580 252 C700 246 820 246 890 254 L888 262 C820 254 700 254 582 260 Z" fill="#f5f3ed" opacity="0.5"/>
+    <!-- Dry-brush gaps: unpainted paper -->
+    <path d="M640 440 C700 438 760 440 820 444" stroke="#f5f3ed" stroke-opacity="0.22" stroke-width="3" stroke-linecap="round" fill="none" filter="url(#bleed)"/>
+    <path d="M300 430 C330 428 360 430 400 434" stroke="#f5f3ed" stroke-opacity="0.2" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#bleed)"/>
+    <!-- Door shut lines -->
+    <path d="M588 372 C586 420 585 470 586 512" stroke="#f5f3ed" stroke-opacity="0.18" stroke-width="2" fill="none"/>
+    <path d="M770 374 C768 420 767 470 768 440" stroke="#f5f3ed" stroke-opacity="0.16" stroke-width="2" fill="none"/>
+    <!-- Door handles -->
+    <path d="M700 412 L740 412" stroke="#0f1a15" stroke-opacity="0.6" stroke-width="5" stroke-linecap="round"/>
+    <path d="M880 414 L916 414" stroke="#0f1a15" stroke-opacity="0.6" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <!-- Pigment pooling at silhouette -->
+  <use href="#body" fill="#000" filter="url(#edge)"/>
+
+  <!-- Greenhouse: pale glass, pillars are body showing through -->
+  <g filter="url(#wash)">
+    <path d="M470 352 C492 316 518 286 556 268 C576 260 596 258 620 258 L688 258 L684 356 Z" fill="url(#glass)" opacity="0.95"/>
+    <path d="M706 258 L846 258 L852 358 L702 358 Z" fill="url(#glass)" opacity="0.93"/>
+    <path d="M866 260 C900 262 926 272 946 292 C962 310 976 336 986 360 L874 360 Z" fill="url(#glass)" opacity="0.9"/>
+  </g>
+  <!-- Quiet diagonal highlight across the glass -->
+  <path d="M496 348 C530 310 560 284 604 266" stroke="#f5f3ed" stroke-opacity="0.55" stroke-width="8" stroke-linecap="round" fill="none" filter="url(#soft)"/>
+  <path d="M734 352 C756 316 776 290 806 268" stroke="#f5f3ed" stroke-opacity="0.35" stroke-width="6" stroke-linecap="round" fill="none" filter="url(#soft)"/>
+
+  <!-- Roof rails -->
+  <path d="M600 243 C700 237 820 237 896 246" stroke="#1b3027" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <!-- Mirror -->
+  <rect x="470" y="334" width="34" height="20" rx="8" fill="#1b3027" opacity="0.92"/>
+
+  <!-- Wheel arch cladding -->
+  <g fill="#0c1711" opacity="0.92" filter="url(#bleed)">
+    <path d="M232 514 C232 446 276 404 330 404 C384 404 428 446 428 514 L410 514 C404 466 372 436 330 436 C288 436 256 466 250 514 Z"/>
+    <path d="M752 514 C752 446 796 404 850 404 C904 404 948 446 948 514 L930 514 C924 466 892 436 850 436 C808 436 776 466 770 514 Z"/>
+  </g>
+
+  <!-- Wheels -->
+  <g>
+    <circle cx="330" cy="482" r="78" fill="url(#tyre)" filter="url(#wash)"/>
+    <circle cx="330" cy="482" r="46" fill="url(#rim)" opacity="0.92" filter="url(#wash)"/>
+    <circle cx="330" cy="482" r="46" fill="none" stroke="#5c645c" stroke-opacity="0.6" stroke-width="2"/>
+    <g stroke="#6f776f" stroke-opacity="0.5" stroke-width="5" stroke-linecap="round" transform="translate(330 482)">
+      <path d="M0 -36 L0 -12"/><path d="M34 -11 L11 -4"/><path d="M21 29 L7 10"/><path d="M-21 29 L-7 10"/><path d="M-34 -11 L-11 -4"/>
+    </g>
+    <circle cx="330" cy="482" r="9" fill="#4d554d"/>
+    <circle cx="850" cy="482" r="78" fill="url(#tyre)" filter="url(#wash)"/>
+    <circle cx="850" cy="482" r="46" fill="url(#rim)" opacity="0.92" filter="url(#wash)"/>
+    <circle cx="850" cy="482" r="46" fill="none" stroke="#5c645c" stroke-opacity="0.6" stroke-width="2"/>
+    <g stroke="#6f776f" stroke-opacity="0.5" stroke-width="5" stroke-linecap="round" transform="translate(850 482) rotate(20)">
+      <path d="M0 -36 L0 -12"/><path d="M34 -11 L11 -4"/><path d="M21 29 L7 10"/><path d="M-21 29 L-7 10"/><path d="M-34 -11 L-11 -4"/>
+    </g>
+    <circle cx="850" cy="482" r="9" fill="#4d554d"/>
+  </g>
+
+  <!-- Lamps -->
+  <path d="M150 414 C170 404 200 400 230 400 L226 420 C200 422 176 426 156 434 Z" fill="#eadcb4" opacity="0.95" filter="url(#soft)"/>
+  <path d="M152 412 C172 402 202 398 232 398 L228 418 C202 420 178 424 158 432 Z" fill="#e3d3a4" opacity="0.8"/>
+  <path d="M1030 398 C1048 422 1060 448 1062 470 L1048 470 C1046 448 1036 426 1022 408 Z" fill="#9b3b31" opacity="0.6" filter="url(#bleed)"/>
+
+  <!-- Loose accents suggesting movement -->
+  <g filter="url(#bleed)">
+    <path d="M1096 456 C1136 452 1170 456 1190 460" stroke="#a5b4a5" stroke-width="9" stroke-linecap="round" fill="none" opacity="0.5"/>
+    <path d="M1086 494 C1130 492 1172 496 1192 500" stroke="#c7b58d" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.5"/>
+  </g>
+  <g fill="#7f8f80" opacity="0.5">
+    <circle cx="1120" cy="530" r="3"/><circle cx="1148" cy="520" r="2"/><circle cx="1084" cy="538" r="2.4"/>
+    <circle cx="76" cy="512" r="2.6"/><circle cx="98" cy="530" r="1.8"/>
+  </g>
+
+  <!-- Paper grain is applied by the page, keeping this export transparent -->
+</svg>

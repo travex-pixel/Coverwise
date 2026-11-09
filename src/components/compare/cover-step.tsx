@@ -53,7 +53,7 @@ export function CoverStep() {
   return (
     <StepFrame
       step="cover"
-      subtitle="Preferences, not commitments. Providers will tell us how closely they can match them."
+      subtitle="Preferences, not commitments."
       onBack={nav.goPrev}
       formId="cover-form"
       continueLabel="Review"
@@ -67,7 +67,7 @@ export function CoverStep() {
             <span className="flex min-w-0 flex-1 flex-col">
               <span className="text-[14px] font-medium leading-tight">Comprehensive</span>
               <span className="mt-0.5 text-[12px] leading-snug text-muted">
-                Covers your car and damage to others. Third party cover is coming later.
+                Your car, and damage to others.
               </span>
             </span>
             <Badge tone="forest" size="sm">

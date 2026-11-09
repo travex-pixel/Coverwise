@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-/* The Coverwise mark: two overlapping rounded forms — one application,
+/* The Coverwise mark: two overlapping rounded forms: one application,
    many providers converging into a single view. */
 export function Mark({ className, tone = "ink" }: { className?: string; tone?: "ink" | "ivory" }) {
   const fg = tone === "ink" ? "#111512" : "#F5F3ED";

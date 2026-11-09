@@ -8,6 +8,7 @@ import {
   useCachedComparison,
   useComparisonSeen,
 } from "@/lib/application/comparison-cache";
+import type { Application } from "@/lib/application/schema";
 import type { ComparisonRecord } from "@/lib/providers/orchestrator";
 import type { ProviderResult } from "@/lib/providers/types";
 
@@ -21,6 +22,8 @@ export function useComparison(id: string) {
   const seen = useComparisonSeen(id);
   const [fetchStatus, setFetchStatus] = React.useState<"idle" | "missing">("idle");
   const [retrying, setRetrying] = React.useState<Set<string>>(new Set());
+  const [repricing, setRepricing] = React.useState(false);
+  const repriceSeq = React.useRef(0);
 
   // Only reach for the server when this tab has no copy (e.g. a shared link
   // with Supabase persistence configured).
@@ -80,6 +83,38 @@ export function useComparison(id: string) {
     [id, cached],
   );
 
+  /** Re-run the comparison with changed cover preferences, keeping this session's URL. */
+  const reprice = React.useCallback(
+    async (cover: Application["cover"]) => {
+      if (!cached) return;
+      const seq = ++repriceSeq.current;
+      const application = { ...cached.application, cover };
+      // Reflect the change immediately so the controls feel instant.
+      cacheComparison({ ...cached, application });
+      setRepricing(true);
+      try {
+        const res = await fetch("/api/comparisons", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            application,
+            consent: { ...cached.consent, consentedAt: cached.consent.consentedAt },
+          }),
+        });
+        if (!res.ok) throw new Error("reprice failed");
+        const fresh = (await res.json()) as ComparisonRecord;
+        if (seq !== repriceSeq.current) return; // a newer change superseded this one
+        // Keep the original id so the page URL and session stay stable.
+        cacheComparison({ ...fresh, id, createdAt: cached.createdAt, application });
+      } catch {
+        /* leave the previous results in place */
+      } finally {
+        if (seq === repriceSeq.current) setRepricing(false);
+      }
+    },
+    [id, cached],
+  );
+
   const remove = React.useCallback(async () => {
     await fetch(`/api/comparisons/${id}`, { method: "DELETE" }).catch(() => null);
     forgetComparison(id);
@@ -90,5 +125,5 @@ export function useComparison(id: string) {
     }
   }, [id]);
 
-  return { state, retry, retrying, remove, markSeen };
+  return { state, retry, retrying, remove, markSeen, reprice, repricing };
 }

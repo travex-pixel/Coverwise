@@ -10,17 +10,17 @@ const STEPS = [
   {
     icon: FileText,
     title: "Tell us once",
-    body: "Your car, who drives it, where it lives and what cover you want. About three minutes, on one screen at a time.",
+    body: "Your car, your driving, your cover. About three minutes.",
   },
   {
     icon: Layers,
     title: "We coordinate the comparison",
-    body: "With your consent, Coverwise sends one standardised application to each participating provider through its approved channel — API, authorised broker, or a human-assisted referral.",
+    body: "With your consent, one application goes to every participating provider.",
   },
   {
     icon: Scale,
     title: "Compare what actually differs",
-    body: "Every response is normalised: premium, excess, valuation, inclusions, exclusions and validity, side by side. Declines and referrals are shown too, so you know exactly who said what.",
+    body: "Premium, excess, inclusions and exclusions, side by side. Referrals and declines too.",
   },
 ];
 
@@ -30,12 +30,10 @@ export function HowItWorksDialog({ children }: { children: React.ReactNode }) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         title="How Coverwise works"
-        description="One application. Multiple insurers. A clearer view of your options."
+        description="One application. Every participating provider."
         footer={
           <div className="flex items-center justify-between gap-3">
-            <p className="text-[12px] leading-snug text-muted">
-              Coverwise is currently a demonstration. Results are illustrative and not insurer quotes.
-            </p>
+            <p className="text-[12px] leading-snug text-muted">Demonstration. Results are illustrative, not quotes.</p>
             <Button asChild size="md">
               <Link href="/compare/vehicle">
                 Start

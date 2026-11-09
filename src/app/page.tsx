@@ -1,43 +1,42 @@
 import { Hero } from "@/components/landing/hero";
+import { HeroArt } from "@/components/landing/hero-art";
 import { LandingNav } from "@/components/landing/nav";
-import { ProductPreview } from "@/components/landing/product-preview";
+import { QuoteStrip } from "@/components/landing/quote-strip";
+import { PaperGrain, Wash } from "@/components/ui/watercolour";
 
 export default function LandingPage() {
   return (
-    <div className="ambient-ivory relative flex h-dvh min-h-[600px] flex-col overflow-hidden">
-      {/* Ambient light: a soft champagne key light and a cool sage fill */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-[20%] -top-[30%] h-[70vh] w-[70vw] rounded-full opacity-70 blur-3xl"
-        style={{ background: "radial-gradient(closest-side, rgb(199 181 141 / 0.35), transparent)" }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-[30%] -left-[10%] h-[60vh] w-[60vw] rounded-full opacity-60 blur-3xl"
-        style={{ background: "radial-gradient(closest-side, rgb(165 180 165 / 0.45), transparent)" }}
-      />
+    <div className="relative flex h-dvh min-h-[600px] flex-col overflow-hidden bg-ivory">
+      <PaperGrain opacity={0.22} />
+      {/* Editorial washes: a sage horizon and a warm champagne light, kept off the type */}
+      <Wash tone="sage" shape="stroke" seed={6} opacity={0.3} className="absolute -left-[6%] bottom-[10%] h-[12vh] w-[80vw] lg:hidden" />
 
       <LandingNav />
 
-      <main className="relative flex min-h-0 flex-1 flex-col px-4 pb-3 pt-1 sm:px-8 lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-center lg:gap-12 lg:px-12 lg:pb-6 xl:gap-16">
-        <div className="shrink-0 lg:pb-6">
+      <main className="relative flex min-h-0 flex-1 flex-col px-4 pb-2 pt-1 sm:px-8 lg:grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:gap-4 lg:px-12 lg:pb-4">
+        {/* Copy */}
+        <div className="relative z-10 shrink-0 lg:pb-10">
           <Hero />
         </div>
-        <div className="mt-4 flex min-h-0 flex-1 items-start lg:mt-0 lg:flex-none lg:items-center">
-          <div className="rise relative flex max-h-full w-full min-h-0" style={{ animationDelay: "160ms" }}>
-            <ProductPreview />
-            {/* Showroom floor: a soft reflection beneath the panel */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-x-6 top-full hidden h-24 lg:block"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgb(17 21 18 / 0.14) 0%, rgb(17 21 18 / 0.04) 45%, transparent 100%)",
-                filter: "blur(10px)",
-                transform: "translateY(6px) scaleX(0.96)",
-                borderRadius: "0 0 48px 48px",
-              }}
-            />
+
+        {/* Artwork + proof card */}
+        <div className="relative mt-2 flex min-h-0 flex-1 flex-col justify-end lg:mt-0 lg:h-[min(640px,76vh)] lg:flex-none lg:justify-center">
+          <div className="rise relative min-h-0 flex-1 lg:flex-none" style={{ animationDelay: "140ms" }}>
+            {/* Mobile: artwork cropped to the car, bleeding past the right edge */}
+            <div className="relative mx-auto h-full w-full overflow-hidden lg:hidden">
+              <HeroArt
+                priority
+                sizes="100vw"
+                className="absolute left-1/2 top-1/2 w-[132%] max-w-none -translate-x-[47%] -translate-y-[50%]"
+              />
+            </div>
+            {/* Desktop: full composition */}
+            <div className="relative hidden w-[104%] lg:block lg:-mr-[4%] lg:-translate-y-[6%]">
+              <HeroArt priority sizes="(min-width: 1024px) 60vw, 100vw" />
+            </div>
+          </div>
+          <div className="rise relative z-10 mt-1 w-full lg:absolute lg:-bottom-4 lg:-left-6 lg:mt-0 lg:w-[332px]" style={{ animationDelay: "260ms" }}>
+            <QuoteStrip />
           </div>
         </div>
       </main>

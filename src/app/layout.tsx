@@ -27,11 +27,11 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://coverwise.vercel.app",
   ),
   title: {
-    default: "Coverwise — Stop shopping around for insurance",
+    default: "Coverwise. Stop shopping around for insurance.",
     template: "%s · Coverwise",
   },
   description:
-    "Tell us about your car once. Coverwise helps you compare available comprehensive car insurance options from participating providers in one place.",
+    "Tell us about your car once. Compare comprehensive car insurance from participating providers in one place.",
   applicationName: "Coverwise",
   keywords: [
     "car insurance comparison",
@@ -40,12 +40,22 @@ export const metadata: Metadata = {
     "compare insurance",
   ],
   openGraph: {
-    title: "Coverwise — Stop shopping around for insurance",
+    title: "Coverwise. Stop shopping around for insurance.",
     description:
       "One application. Multiple insurers. A clearer view of your options.",
     type: "website",
     locale: "en_AU",
     siteName: "Coverwise",
+    images: [
+      { url: "/og/coverwise-og.jpg", width: 1200, height: 630, alt: "Coverwise. Stop shopping around for insurance.", type: "image/jpeg" },
+      { url: "/og/coverwise-square.jpg", width: 1080, height: 1080, alt: "Coverwise", type: "image/jpeg" },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Coverwise. Stop shopping around for insurance.",
+    description: "One application. Multiple insurers. A clearer view of your options.",
+    images: ["/og/coverwise-og.jpg"],
   },
   robots: { index: true, follow: true },
 };

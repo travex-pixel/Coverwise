@@ -58,7 +58,7 @@ export async function ProductPreview({ className }: { className?: string }) {
 
       {/* Provider roster: one application fanned out to every adapter */}
       <ul className="mt-3 flex items-center gap-1.5 sm:mt-4" aria-label="Providers contacted">
-        {PROVIDER_LIST.map((p) => {
+        {PROVIDER_LIST.filter((p) => p.connected).map((p) => {
           const r = results.find((x) => x.providerId === p.id);
           const dot = !p.connected
             ? "bg-white/20"
@@ -76,6 +76,9 @@ export async function ProductPreview({ className }: { className?: string }) {
             </li>
           );
         })}
+        <li className="flex h-6 items-center rounded-[6px] border border-dashed border-white/20 px-1.5 text-[10px] text-ivory/60">
+          +{PROVIDER_LIST.filter((p) => !p.connected).length}
+        </li>
         <li className="ml-1 hidden whitespace-nowrap text-[11px] text-ivory/50 sm:block">
           one application · {PROVIDER_LIST.length} providers
         </li>
@@ -154,7 +157,7 @@ export async function ProductPreview({ className }: { className?: string }) {
       </div>
 
       <p className="mt-3 hidden text-[10.5px] leading-snug text-ivory/40 sm:mt-4 sm:block">
-        Illustrative demonstration — not an insurer quote. Fictional providers, synthetic pricing.
+        Illustrative demonstration. Not insurer quotes.
       </p>
     </div>
   );

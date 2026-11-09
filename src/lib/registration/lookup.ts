@@ -37,7 +37,7 @@ export const nullLookupProvider: RegistrationLookupProvider = {
     return {
       status: "not_connected",
       message:
-        "Registration lookup isn't connected yet. Enter your vehicle details below — it takes about 20 seconds.",
+        "Registration lookup isn't connected yet. Enter your details below.",
     };
   },
 };

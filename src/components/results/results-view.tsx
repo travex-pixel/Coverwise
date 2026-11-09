@@ -13,6 +13,7 @@ import { Segmented } from "@/components/ui/segmented";
 import { Select } from "@/components/ui/select";
 import { vehicleTitle } from "@/lib/application/labels";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
+import { Wash } from "@/components/ui/watercolour";
 import { SORT_LABELS, sortQuotes, type SortKey } from "@/lib/quotes/scoring";
 import type { Quote } from "@/lib/providers/types";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,7 @@ import { Pipeline } from "./pipeline";
 import { ProviderJourney } from "./provider-journey";
 import { QuoteCard } from "./quote-card";
 import { QuoteDetail } from "./quote-detail";
+import { TuneCover } from "./tune-cover";
 import { useComparison } from "./use-comparison";
 
 type Tab = "quotes" | "providers";
@@ -31,7 +33,7 @@ export function ResultsView() {
   const id = params.id;
   const router = useRouter();
   const reduce = useReducedMotion();
-  const { state, retry, retrying, remove, markSeen } = useComparison(id);
+  const { state, retry, retrying, remove, markSeen, reprice, repricing } = useComparison(id);
   const [tab, setTab] = React.useState<Tab>("quotes");
   const [view, setView] = React.useState<View>("list");
   const [sort, setSort] = React.useState<SortKey>("value");
@@ -133,7 +135,7 @@ export function ResultsView() {
                   <Chip label="not connected" n={counts.notConnected} />
                 </ul>
                 <p className="ml-auto hidden text-[12px] text-muted-2 lg:block">
-                  Illustrative demonstration — not insurer quotes.
+                  Illustrative demonstration. Not insurer quotes.
                 </p>
               </div>
             </div>
@@ -156,6 +158,7 @@ export function ResultsView() {
                     {tab === "quotes" && (
                       <>
                         <div className="ml-auto flex items-center gap-2">
+                          <TuneCover cover={record.application.cover} onChange={reprice} busy={repricing} />
                           <label className="sr-only" htmlFor="sort">
                             Sort quotes
                           </label>
@@ -198,7 +201,7 @@ export function ResultsView() {
                       quoted.length === 0 ? (
                         <EmptyQuotes />
                       ) : view === "list" ? (
-                        <ol className="flex flex-col gap-3">
+                        <ol className={cn("flex flex-col gap-3 transition-opacity duration-(--dur)", repricing && "opacity-60")}>
                           <AnimatePresence initial={false}>
                             {sorted.map((q, i) => (
                               <motion.li
@@ -219,8 +222,7 @@ export function ResultsView() {
                             ))}
                           </AnimatePresence>
                           <li className="pt-1 text-[11.5px] leading-snug text-muted-2">
-                            &ldquo;Best overall value&rdquo; weighs price against coverage breadth. The cheapest premium is not the best
-                            policy for everyone — check excess, valuation and exclusions.
+                            Best overall value weighs price against coverage breadth. Cheapest is not always best.
                           </li>
                         </ol>
                       ) : (
@@ -307,10 +309,11 @@ function Chip({ label, n, tone }: { label: string; n: number; tone?: "success" |
 
 function EmptyQuotes() {
   return (
-    <div className="surface-card rounded-[14px] p-6 text-center">
-      <p className="text-[15px] font-medium">No quotes were returned this time.</p>
+    <div className="surface-card relative overflow-hidden rounded-[14px] p-6 text-center">
+      <Wash tone="sage" shape="pool" seed={12} opacity={0.35} className="absolute -left-10 -top-10 h-32 w-72" />
+      <p className="relative text-[15px] font-medium">No quotes were returned this time.</p>
       <p className="mt-1 text-[13.5px] text-muted">
-        Check the provider journey for referrals, declines and retries — or adjust your cover preferences and try again.
+        See the provider journey for referrals and declines, or tune your cover and try again.
       </p>
       <Button asChild variant="secondary" className="mt-4">
         <Link href="/compare/cover">Adjust preferences</Link>
@@ -326,11 +329,11 @@ function MissingState() {
         <Wordmark />
       </header>
       <main className="flex flex-1 items-center justify-center px-4">
-        <div className="surface-card max-w-[420px] rounded-[16px] p-6 text-center">
-          <p className="text-[18px] font-medium tracking-[-0.015em]">This comparison isn&apos;t available.</p>
+        <div className="surface-card relative max-w-[420px] overflow-hidden rounded-[16px] p-6 text-center">
+          <Wash tone="champagne" shape="pool" seed={14} opacity={0.35} className="absolute -right-16 -top-12 h-36 w-80" />
+          <p className="relative text-[18px] font-medium tracking-[-0.015em]">This comparison isn&apos;t available.</p>
           <p className="mt-2 text-[13.5px] leading-snug text-muted">
-            Demonstration sessions live in the browser tab that created them, and are deleted on request. Start a new
-            comparison — it takes about three minutes.
+            Sessions live in the tab that created them. Start a new comparison in about three minutes.
           </p>
           <Button asChild className="mt-5">
             <Link href="/compare/vehicle">Start a new comparison</Link>

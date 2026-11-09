@@ -46,6 +46,8 @@ export function Pipeline({ record, onDone }: { record: ComparisonRecord; onDone:
     const status: ProviderStatus = reached.length ? reached[reached.length - 1].status : "SUBMITTED";
     return { def, status, done: TERMINAL.includes(status) };
   });
+  const active = rows.filter((r) => r.status !== "NOT_CONNECTED");
+  const notConnected = rows.filter((r) => r.status === "NOT_CONNECTED");
   const responded = rows.filter((r) => r.done && r.status !== "NOT_CONNECTED").length;
   const contacted = rows.filter((r) => r.status !== "NOT_CONNECTED").length;
 
@@ -82,13 +84,12 @@ export function Pipeline({ record, onDone }: { record: ComparisonRecord; onDone:
         </div>
 
         <ol className="scrollbar-thin mt-4 flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto">
-          {rows.map(({ def, status, done }) => (
+          {active.map(({ def, status, done }) => (
             <li
               key={def.id}
               className={cn(
                 "flex items-center gap-3 rounded-[12px] border border-white/8 px-3 py-2 transition-colors duration-(--dur)",
                 done ? "bg-white/[0.06]" : "bg-white/[0.03]",
-                status === "NOT_CONNECTED" && "opacity-50",
               )}
             >
               <ProviderMark provider={def} size="sm" />
@@ -99,11 +100,27 @@ export function Pipeline({ record, onDone }: { record: ComparisonRecord; onDone:
               <StatusBadge status={status} dark />
             </li>
           ))}
+          {notConnected.length > 0 && (
+            <li className="flex items-center gap-3 rounded-[12px] border border-dashed border-white/12 px-3 py-2 opacity-70">
+              <div className="flex -space-x-1.5">
+                {notConnected.slice(0, 6).map(({ def }) => (
+                  <ProviderMark key={def.id} provider={def} size="sm" className="size-6 rounded-[6px] text-[10px] ring-2 ring-[#15191a] grayscale" />
+                ))}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[13px] font-medium text-ivory/80">
+                  {notConnected.length} Australian insurers not yet connected
+                </p>
+                <p className="truncate text-[11.5px] text-ivory/45">Nothing was sent to them.</p>
+              </div>
+              <StatusBadge status="NOT_CONNECTED" dark />
+            </li>
+          )}
         </ol>
 
         <div className="mt-4 flex items-center justify-between gap-3">
           <p className="text-[11px] leading-snug text-ivory/40">
-            Illustrative demonstration — fictional providers, synthetic responses.
+            Illustrative demonstration.
           </p>
           <Button variant="inverse" size="sm" onClick={onDone}>
             Show results

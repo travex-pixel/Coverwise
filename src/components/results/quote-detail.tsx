@@ -53,7 +53,7 @@ export function QuoteDetail({
       </div>
 
       <div className="rounded-[12px] border border-champagne-2/40 bg-champagne/15 px-3 py-2 text-[12px] leading-snug text-ink">
-        Illustrative demonstration — not an insurer quote. Read the insurer&apos;s PDS before relying on any figure.
+        Illustrative demonstration. Not an insurer quote.
       </div>
 
       <div className="grid grid-cols-2 gap-2">

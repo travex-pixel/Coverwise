@@ -45,6 +45,13 @@ export interface ProviderDefinition {
   connected: boolean;
   /** Whether results from this adapter are synthetic demonstration data. */
   demo: boolean;
+  /**
+   * True for real Australian insurers listed as market coverage targets.
+   * They are never sent applications and never have results attributed to
+   * them until a genuine, authorised integration exists. Names are used
+   * descriptively; no relationship is implied.
+   */
+  realBrand?: boolean;
   tagline: string;
   /** Short, plain-English description of what the integration does. */
   integrationNote: string;

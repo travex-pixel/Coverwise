@@ -1,68 +1,49 @@
 import Link from "next/link";
-import { ArrowRight, Layers, PenLine, Scale } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HowItWorksDialog } from "./how-it-works-dialog";
 
 export function Hero() {
   return (
     <div className="flex min-w-0 flex-col">
-      <p className="rise text-[12px] font-medium uppercase tracking-[0.12em] text-champagne-3" style={{ animationDelay: "0ms" }}>
-        Comprehensive car insurance · Australia
+      <p className="rise flex items-center gap-3 text-[11.5px] font-medium uppercase tracking-[0.14em] text-champagne-3" style={{ animationDelay: "0ms" }}>
+        <span className="h-px w-8 bg-champagne-2/70" aria-hidden />
+        <span className="sm:hidden">Car insurance · Australia</span>
+        <span className="hidden sm:inline">Comprehensive car insurance · Australia</span>
       </p>
       <h1
-        className="rise mt-3 text-balance text-[clamp(2.1rem,5.2vw,4.5rem)] font-medium leading-[1.0] tracking-[-0.035em] text-ink sm:mt-4"
+        className="rise mt-4 text-balance text-[clamp(2.25rem,5vw,4.4rem)] font-medium leading-[0.98] tracking-[-0.035em] text-ink sm:mt-5"
         style={{ animationDelay: "60ms" }}
       >
         Stop{" "}
-        <em className="font-serif font-normal italic tracking-[-0.02em] text-forest">shopping around</em>{" "}
-        for insurance.
+        <em className="font-serif font-normal italic tracking-[-0.02em] text-forest">shopping around</em>
+        <br className="hidden lg:block" /> for insurance.
       </h1>
       <p
-        className="rise mt-3 max-w-[34rem] text-pretty text-[15px] leading-[1.5] text-muted sm:mt-6 sm:text-[18px]"
+        className="rise mt-4 max-w-[30rem] text-pretty text-[15px] leading-[1.5] text-muted sm:mt-6 sm:text-[17.5px]"
         style={{ animationDelay: "120ms" }}
       >
-        Tell us about your car once. We&apos;ll help you compare available insurance options from participating
-        providers — without visiting a dozen websites.
+        Tell us about your car once. See how participating providers compare, all in one place.
       </p>
 
-      <div className="rise mt-5 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:items-center sm:gap-3" style={{ animationDelay: "180ms" }}>
-        <Button asChild size="xl" className="w-full sm:w-auto sm:min-w-[220px]">
+      <div className="rise mt-5 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:items-center sm:gap-4" style={{ animationDelay: "180ms" }}>
+        <Button asChild size="xl" className="w-full sm:w-auto sm:min-w-[232px]">
           <Link href="/compare/vehicle">
             Start my comparison
             <ArrowRight className="size-4 transition-transform duration-(--dur-fast) group-hover/button:translate-x-0.5" strokeWidth={2.25} aria-hidden />
           </Link>
         </Button>
         <HowItWorksDialog>
-          <Button variant="secondary" size="xl" className="w-full sm:w-auto">
+          <button className="group/link inline-flex h-[52px] items-center justify-center gap-1.5 text-[15px] font-medium text-ink underline-offset-[6px] decoration-champagne-2 hover:underline sm:justify-start">
             See how it works
-          </Button>
+            <ArrowRight className="size-3.5 text-champagne-3 transition-transform group-hover/link:translate-x-0.5" strokeWidth={2.25} aria-hidden />
+          </button>
         </HowItWorksDialog>
       </div>
 
-      <p className="rise mt-3 text-[13px] text-muted-2 sm:mt-4" style={{ animationDelay: "240ms" }}>
+      <p className="rise mt-3 text-[13px] text-muted-2 sm:mt-5" style={{ animationDelay: "240ms" }}>
         Your details entered once. Your options, all in one place.
       </p>
-
-      <ul
-        className="rise mt-6 hidden gap-x-8 gap-y-3 text-[13.5px] text-muted sm:mt-9 sm:flex sm:flex-wrap"
-        style={{ animationDelay: "300ms" }}
-      >
-        {[
-          [PenLine, "Enter your details once"],
-          [Layers, "Participating providers compared"],
-          [Scale, "Coverage differences made visible"],
-        ].map(([Icon, label]) => {
-          const I = Icon as typeof PenLine;
-          return (
-            <li key={label as string} className="flex items-center gap-2.5">
-              <span className="flex size-7 items-center justify-center rounded-full bg-forest/8 text-forest">
-                <I className="size-3.5" strokeWidth={2} aria-hidden />
-              </span>
-              {label as string}
-            </li>
-          );
-        })}
-      </ul>
     </div>
   );
 }

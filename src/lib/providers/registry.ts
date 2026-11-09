@@ -111,31 +111,42 @@ export const PROVIDER_DEFINITIONS: Record<string, ProviderDefinition> = {
     accentHue: 190,
     monogram: "P",
   },
-  southbank: {
-    id: "southbank",
-    name: "Southbank General",
-    underwriter: "Southbank General Insurance Ltd",
+};
+
+/* Real Australian insurers on the integration roadmap. Listed so the market
+   view is honest about who is and isn't connected. No application is sent to
+   them and no result is ever attributed to them in demonstration mode. */
+const ROADMAP_INSURERS: { id: string; name: string; underwriter: string; hue: number }[] = [
+  { id: "nrma", name: "NRMA Insurance", underwriter: "Insurance Australia Limited", hue: 215 },
+  { id: "aami", name: "AAMI", underwriter: "AAI Limited", hue: 0 },
+  { id: "allianz", name: "Allianz", underwriter: "Allianz Australia Insurance Limited", hue: 212 },
+  { id: "budget-direct", name: "Budget Direct", underwriter: "Auto & General Insurance Company Limited", hue: 40 },
+  { id: "youi", name: "Youi", underwriter: "Youi Pty Ltd", hue: 95 },
+  { id: "gio", name: "GIO", underwriter: "AAI Limited", hue: 265 },
+  { id: "qbe", name: "QBE", underwriter: "QBE Insurance (Australia) Limited", hue: 200 },
+  { id: "racv", name: "RACV", underwriter: "Insurance Manufacturers of Australia Pty Ltd", hue: 225 },
+  { id: "racq", name: "RACQ", underwriter: "RACQ Insurance Limited", hue: 50 },
+  { id: "suncorp", name: "Suncorp", underwriter: "AAI Limited", hue: 60 },
+  { id: "bingle", name: "Bingle", underwriter: "AAI Limited", hue: 330 },
+  { id: "coles", name: "Coles Insurance", underwriter: "Insurance Australia Limited", hue: 5 },
+];
+
+for (const r of ROADMAP_INSURERS) {
+  PROVIDER_DEFINITIONS[r.id] = {
+    id: r.id,
+    name: r.name,
+    underwriter: r.underwriter,
     integration: "insurer_api",
     connected: false,
-    demo: true,
-    tagline: "Integration in progress",
-    integrationNote: "Commercial agreement under discussion. Not yet receiving applications.",
-    accentHue: 220,
-    monogram: "S",
-  },
-  tallow: {
-    id: "tallow",
-    name: "Tallow Mutual",
-    underwriter: "Tallow Mutual Ltd",
-    integration: "broker_api",
-    connected: false,
-    demo: true,
-    tagline: "On the roadmap",
-    integrationNote: "Planned broker integration. Not yet receiving applications.",
-    accentHue: 90,
-    monogram: "T",
-  },
-};
+    demo: false,
+    realBrand: true,
+    tagline: "Not yet connected",
+    integrationNote: "No integration or commercial agreement in place. Nothing is sent to this insurer.",
+    accentHue: r.hue,
+    monogram: r.name.replace(/insurance/i, "").trim().charAt(0).toUpperCase(),
+  };
+}
+
 
 const PERSONALITIES: Record<string, DemoPersonality> = {
   harbourline: {
@@ -297,7 +308,7 @@ const PERSONALITIES: Record<string, DemoPersonality> = {
       kind: "manual",
       reason: "Pelorus requires you to verify your identity on its own site before it releases a price.",
       instruction:
-        "The approved workflow pre-filled your application and paused at the identity check. Coverwise never bypasses verification steps — you complete that step yourself, then the quote is captured.",
+        "The approved workflow pre-filled your application and paused at the identity check. You complete that step yourself, then the quote is captured.",
     }),
   },
 };

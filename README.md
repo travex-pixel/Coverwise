@@ -4,7 +4,7 @@
 
 Coverwise is a premium Australian insurance comparison experience. A driver enters their vehicle, driver, usage and cover preferences once; Coverwise coordinates the comparison across participating providers and presents normalised results — premiums, excesses, valuation, inclusions, exclusions, referrals and declines — in one place.
 
-> **Status: demonstration prototype.** All providers are fictional. Results are synthetic and clearly labelled "Illustrative demonstration — not an insurer quote." Coverwise does not provide financial product advice or arrange insurance. Regulatory, privacy and commercial advice is required before any real customer distribution.
+> **Status: demonstration prototype.** Quoting providers are fictional demonstration adapters with synthetic results, clearly labelled "Illustrative demonstration. Not an insurer quote." Real Australian insurers appear only as not-yet-connected integration targets: nothing is sent to them and no relationship is implied. Coverwise does not provide financial product advice or arrange insurance. Regulatory, privacy and commercial advice is required before any real customer distribution.
 
 ## Experience
 
@@ -16,9 +16,13 @@ Coverwise is a premium Australian insurance comparison experience. A driver ente
 | Usage | `/compare/usage` | Postcode, parking, kilometres, use, security |
 | Cover | `/compare/cover` | Valuation, excess, optional extras |
 | Review | `/compare/review` | Editable summary, provider disclosure, explicit consent before anything is shared |
-| Results | `/results/[id]` | Live replay of each provider's audited journey, then sortable quotes, feature matrix, details, retry and delete |
+| Results | `/results/[id]` | Live replay of each provider's audited journey, then sortable quotes, feature matrix, details, retry, delete, and **Tune cover** to re-price every provider live |
 
 Every screen is designed for 390 × 844 (Android) and 1440 × 900 (desktop) without page-level scrolling. Long content uses intentional, contained scroll regions. The footer stays reachable when the mobile keyboard is open.
+
+## Visual identity
+
+An editorial watercolour identity on warm ivory paper. The signature artwork, an original SUV illustration built entirely in SVG (layered translucent washes, pigment granulation, bleeding edges, paper grain), lives in `art/` and is rasterised to optimised WebP in `public/art/` by `pnpm art`, which also renders the link preview images in `public/og/` (1200×630 and 1080×1080 JPEGs under 300 KB for WhatsApp, Messenger and iMessage). The scripts use the locally installed Playwright Chromium; Playwright is not a project dependency. Washes elsewhere in the product come from `src/components/ui/watercolour.tsx`.
 
 ## Architecture
 

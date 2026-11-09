@@ -29,7 +29,7 @@ export function FeatureMatrix({ items, onSelect, selectedId }: { items: Item[]; 
         <span className={cn("tabular font-medium", q.annualPremium === minPremium && "text-success")}>{formatAud(q.annualPremium)}</span>
       ),
     },
-    { label: "Monthly", render: (q) => <span className="tabular">{q.monthlyPremium ? formatAudCents(q.monthlyPremium) : "—"}</span> },
+    { label: "Monthly", render: (q) => <span className="tabular">{q.monthlyPremium ? formatAudCents(q.monthlyPremium) : "Annual only"}</span> },
     { label: "Excess", render: (q) => <span className={cn("tabular", q.excess === minExcess && "text-success font-medium")}>{formatAud(q.excess)}</span> },
     { label: "Valuation", render: (q) => (q.valuation === "agreed" ? `Agreed${q.agreedValue ? ` · ${formatAud(q.agreedValue)}` : ""}` : "Market") },
     { label: "Coverage score", render: (q) => <span className={cn("tabular", q.coverageScore === maxScore && "text-success font-medium")}>{q.coverageScore}/100</span> },
