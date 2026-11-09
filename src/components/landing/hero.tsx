@@ -10,7 +10,7 @@ export function Hero() {
         Comprehensive car insurance · Australia
       </p>
       <h1
-        className="rise mt-3 text-balance text-[clamp(2.1rem,5.6vw,3.9rem)] font-medium leading-[1.02] tracking-[-0.035em] text-ink sm:mt-4"
+        className="rise mt-3 text-balance text-[clamp(2.1rem,5.2vw,4.5rem)] font-medium leading-[1.0] tracking-[-0.035em] text-ink sm:mt-4"
         style={{ animationDelay: "60ms" }}
       >
         Stop{" "}
@@ -18,7 +18,7 @@ export function Hero() {
         for insurance.
       </h1>
       <p
-        className="rise mt-3 max-w-[34rem] text-pretty text-[15px] leading-[1.5] text-muted sm:mt-5 sm:text-[17px]"
+        className="rise mt-3 max-w-[34rem] text-pretty text-[15px] leading-[1.5] text-muted sm:mt-6 sm:text-[18px]"
         style={{ animationDelay: "120ms" }}
       >
         Tell us about your car once. We&apos;ll help you compare available insurance options from participating

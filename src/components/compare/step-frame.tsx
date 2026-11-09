@@ -48,7 +48,7 @@ export function StepFrame({
       <div className="scrollbar-thin flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-4 pb-4 pt-2 sm:px-6 sm:pt-4">
         <div className={cn("mx-auto flex w-full max-w-[560px] flex-1 flex-col", aside && "lg:max-w-[920px] lg:flex-row lg:items-start lg:gap-10")}>
           <div className="flex min-w-0 flex-1 flex-col">
-            <div className="mb-4 flex items-start justify-between gap-4 sm:mb-6">
+            <div className="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
               <div>
                 <p className="text-[12px] font-medium uppercase tracking-[0.1em] text-champagne-3">
                   Step {index + 1} · {STEP_META[step].label}
@@ -58,7 +58,7 @@ export function StepFrame({
                 </h1>
                 {subtitle && <p className="mt-2 text-pretty text-[14px] leading-snug text-muted sm:text-[15px]">{subtitle}</p>}
               </div>
-              {headerAction}
+              {headerAction && <div className="shrink-0">{headerAction}</div>}
             </div>
             {children}
           </div>

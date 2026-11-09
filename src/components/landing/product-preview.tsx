@@ -5,7 +5,7 @@ import { ProviderMark } from "@/components/ui/provider-mark";
 import { DEMO_PROFILE } from "@/lib/application/demo-profile";
 import { vehicleTitle } from "@/lib/application/labels";
 import { formatAud } from "@/lib/format";
-import { PROVIDER_DEFINITIONS } from "@/lib/providers/registry";
+import { PROVIDER_DEFINITIONS, PROVIDER_LIST } from "@/lib/providers/registry";
 import { getPreviewResults } from "@/lib/quotes/preview";
 import { sortQuotes } from "@/lib/quotes/scoring";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,7 @@ export async function ProductPreview({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "surface-showroom reflection flex h-full w-full flex-col rounded-(--radius-panel) p-4 sm:p-5",
+        "surface-showroom reflection flex max-h-full w-full flex-col overflow-hidden rounded-(--radius-panel) p-4 sm:p-5",
         className,
       )}
       aria-label="Preview of the Coverwise comparison dashboard with demonstration data"
@@ -50,14 +50,39 @@ export async function ProductPreview({ className }: { className?: string }) {
         </span>
         <span className="text-ivory/30">·</span>
         <span>{quoted.length} quoted</span>
-        <span className="text-ivory/30">·</span>
-        <span>{referred} referred</span>
-        <span className="text-ivory/30">·</span>
-        <span>{declined} declined</span>
+        <span className="hidden text-ivory/30 sm:inline">·</span>
+        <span className="hidden sm:inline">{referred} referred</span>
+        <span className="hidden text-ivory/30 sm:inline">·</span>
+        <span className="hidden sm:inline">{declined} declined</span>
       </div>
 
+      {/* Provider roster: one application fanned out to every adapter */}
+      <ul className="mt-3 flex items-center gap-1.5 sm:mt-4" aria-label="Providers contacted">
+        {PROVIDER_LIST.map((p) => {
+          const r = results.find((x) => x.providerId === p.id);
+          const dot = !p.connected
+            ? "bg-white/20"
+            : r?.status === "QUOTED"
+              ? "bg-sage"
+              : r?.status === "REFERRED"
+                ? "bg-champagne"
+                : r?.status === "DECLINED"
+                  ? "bg-[#c0675c]"
+                  : "bg-champagne/70";
+          return (
+            <li key={p.id} className="relative">
+              <ProviderMark provider={p} size="sm" className={cn("size-6 rounded-[6px] text-[10px]", !p.connected && "opacity-40 grayscale")} />
+              <span className={cn("absolute -right-0.5 -top-0.5 size-2 rounded-full ring-2 ring-[#131815]", dot)} aria-hidden />
+            </li>
+          );
+        })}
+        <li className="ml-1 hidden whitespace-nowrap text-[11px] text-ivory/50 sm:block">
+          one application · {PROVIDER_LIST.length} providers
+        </li>
+      </ul>
+
       {/* Quote rows */}
-      <ol className="mt-3 flex min-h-0 flex-1 flex-col gap-2 sm:mt-4 sm:gap-2.5">
+      <ol className="mt-3 flex min-h-0 flex-col gap-2 sm:mt-4 sm:gap-2.5">
         {ranked.map((r, i) => {
           const p = PROVIDER_DEFINITIONS[r.providerId];
           const q = r.quote;
@@ -68,6 +93,8 @@ export async function ProductPreview({ className }: { className?: string }) {
               className={cn(
                 "preview-row flex items-center gap-3 rounded-[13px] border border-white/8 bg-white/[0.045] px-3 py-2.5 hairline-light",
                 i === 0 && "border-champagne/30 bg-white/[0.07]",
+                i === 2 && "max-sm:hidden",
+                i === 1 && "max-sm:[@media(max-height:760px)]:hidden",
               )}
               style={{ animationDelay: `${180 + i * 90}ms` }}
             >
@@ -126,7 +153,7 @@ export async function ProductPreview({ className }: { className?: string }) {
         ))}
       </div>
 
-      <p className="mt-3 text-[10.5px] leading-snug text-ivory/40 sm:mt-4">
+      <p className="mt-3 hidden text-[10.5px] leading-snug text-ivory/40 sm:mt-4 sm:block">
         Illustrative demonstration — not an insurer quote. Fictional providers, synthetic pricing.
       </p>
     </div>

@@ -23,8 +23,8 @@ export default function LandingPage() {
         <div className="shrink-0 lg:pb-6">
           <Hero />
         </div>
-        <div className="mt-4 flex min-h-0 flex-1 items-stretch lg:mt-0 lg:h-[min(640px,78vh)] lg:flex-none">
-          <div className="rise w-full min-h-0 lg:h-full" style={{ animationDelay: "160ms" }}>
+        <div className="mt-4 flex min-h-0 flex-1 items-start lg:mt-0 lg:flex-none lg:items-center">
+          <div className="rise flex max-h-full w-full min-h-0" style={{ animationDelay: "160ms" }}>
             <ProductPreview />
           </div>
         </div>
@@ -32,8 +32,11 @@ export default function LandingPage() {
 
       <footer className="relative flex h-9 shrink-0 items-center justify-between px-4 text-[11px] text-muted-2 sm:px-8 lg:px-12">
         <p className="truncate">
-          Coverwise is a comparison technology demonstration. Illustrative results are not insurer quotes. Not
-          financial advice.
+          <span className="sm:hidden">Demonstration only. Not insurer quotes. Not financial advice.</span>
+          <span className="hidden sm:inline">
+            Coverwise is a comparison technology demonstration. Illustrative results are not insurer quotes. Not
+            financial advice.
+          </span>
         </p>
         <p className="hidden sm:block">© 2026 Coverwise</p>
       </footer>

@@ -35,8 +35,10 @@ export function computeBasePremium(app: Application, asOfYear: number): PricingB
   const { vehicle, driver, usage, cover } = app;
   const vehicleValue = estimateVehicleValue(vehicle.make, vehicle.model, vehicle.year, asOfYear);
 
-  // Base: ~1.9% of vehicle value with a floor, lightly sub-linear for expensive cars.
-  const base = Math.max(520, 0.019 * Math.pow(vehicleValue, 0.985));
+  // Base: ~4.3% of current vehicle value with a floor, lightly sub-linear for
+  // expensive cars. Calibrated so a typical metro comprehensive policy on a
+  // two-year-old mid-size SUV lands around $1,000 before provider posture.
+  const base = Math.max(680, 0.043 * Math.pow(vehicleValue, 0.985));
 
   const factors: { label: string; multiplier: number }[] = [];
   const push = (label: string, multiplier: number) => {

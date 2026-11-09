@@ -27,7 +27,7 @@ export const COUNT_LABELS: Record<Application["driver"]["claims"], string> = {
 };
 
 export const PARKING_LABELS: Record<Application["usage"]["parking"], string> = {
-  garage: "Locked garage",
+  garage: "Garage",
   carport: "Carport",
   driveway: "Driveway",
   street: "Street",
@@ -48,7 +48,7 @@ export const USE_LABELS: Record<Application["usage"]["use"], string> = {
 };
 
 export const SECURITY_LABELS: Record<Application["usage"]["security"][number], string> = {
-  immobiliser: "Factory immobiliser",
+  immobiliser: "Immobiliser",
   alarm: "Alarm",
   tracker: "GPS tracker",
   dashcam: "Dash cam",

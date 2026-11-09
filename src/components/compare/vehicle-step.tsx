@@ -189,7 +189,7 @@ export function VehicleStep() {
             </Field>
           )}
           <Field label="Model" error={formState.errors.model?.message}>
-            {makeRef ? (
+            {!makeIsOther ? (
               <Controller
                 control={control}
                 name="model"
@@ -206,7 +206,7 @@ export function VehicleStep() {
                     onBlur={field.onBlur}
                     placeholder={make ? "Select model" : "Choose a make first"}
                     disabled={!make}
-                    options={makeRef.models.map((m) => ({ value: m.name, label: m.name }))}
+                    options={(makeRef?.models ?? []).map((m) => ({ value: m.name, label: m.name }))}
                   />
                 )}
               />

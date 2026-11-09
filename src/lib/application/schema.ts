@@ -20,19 +20,23 @@ export const vehicleSchema = z.object({
     .regex(/^[A-Z0-9]{0,7}$/, "Letters and numbers only (up to 7)")
     .default(""),
   state: z.enum(AU_STATES, { error: "Choose the state of registration" }),
-  make: z.string().trim().min(1, "Choose a make"),
-  model: z.string().trim().min(1, "Choose a model"),
+  make: z.string({ error: "Choose a make" }).trim().min(1, "Choose a make"),
+  model: z.string({ error: "Choose a model" }).trim().min(1, "Choose a model"),
   year: z.coerce
     .number({ error: "Choose a year" })
     .int()
     .min(1990, "We cover vehicles from 1990 onwards")
     .refine((y) => y <= currentYear() + 1, "That year is in the future"),
-  variant: z.string().trim().min(1, "Choose or enter a variant").max(60),
+  variant: z.string({ error: "Choose or enter a variant" }).trim().min(1, "Choose or enter a variant").max(60),
   modifications: z.enum(["none", "cosmetic", "performance"], {
     error: "Tell us about modifications",
   }),
   modificationsDetail: z.string().trim().max(160).optional(),
 });
+
+/** Optional numeric field tolerant of empty form inputs. */
+const optionalNumber = (inner: z.ZodNumber) =>
+  z.preprocess((v) => (v === "" || v === null || v === undefined ? undefined : v), z.coerce.number().pipe(inner).optional());
 
 export const LICENCE_TYPES = ["full", "p2", "p1", "learner", "international"] as const;
 export const YEARS_LICENSED = ["<1", "1-2", "3-5", "6-10", "10+"] as const;
@@ -51,10 +55,10 @@ export const driverSchema = z
     claimsAtFault: z.boolean().optional(),
     infringements: z.enum(COUNT_BANDS, { error: "Tell us about infringements in the last 3 years" }),
     additionalDrivers: z.enum(COUNT_BANDS, { error: "Tell us about additional drivers" }),
-    youngestAdditionalDriverAge: z.coerce.number().int().min(16).max(99).optional(),
+    youngestAdditionalDriverAge: optionalNumber(z.number().int().min(16, "At least 16").max(99, "Please check the age")),
     currentlyInsured: z.boolean({ error: "Tell us if the car is currently insured" }),
     currentInsurer: z.string().trim().max(60).optional(),
-    currentPremium: z.coerce.number().min(0).max(20000).optional(),
+    currentPremium: optionalNumber(z.number().min(0).max(20000, "Please check the amount")),
   })
   .superRefine((d, ctx) => {
     if (d.claims !== "none" && d.claimsAtFault === undefined) {

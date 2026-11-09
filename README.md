@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Coverwise
 
-## Getting Started
+**Stop shopping around for insurance.** One application. Multiple insurers. A clearer view of your options.
 
-First, run the development server:
+Coverwise is a premium Australian insurance comparison experience. A driver enters their vehicle, driver, usage and cover preferences once; Coverwise coordinates the comparison across participating providers and presents normalised results — premiums, excesses, valuation, inclusions, exclusions, referrals and declines — in one place.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+> **Status: demonstration prototype.** All providers are fictional. Results are synthetic and clearly labelled "Illustrative demonstration — not an insurer quote." Coverwise does not provide financial product advice or arrange insurance. Regulatory, privacy and commercial advice is required before any real customer distribution.
+
+## Experience
+
+| Screen | Route | Notes |
+| --- | --- | --- |
+| Landing | `/` | Fixed-viewport hero with a server-rendered product preview driven by the real demo engine |
+| Vehicle | `/compare/vehicle` | Guided entry with extensible registration lookup module (honest "not connected" state) and a one-tap demo profile |
+| Driver | `/compare/driver` | Conditional follow-ups only when relevant |
+| Usage | `/compare/usage` | Postcode, parking, kilometres, use, security |
+| Cover | `/compare/cover` | Valuation, excess, optional extras |
+| Review | `/compare/review` | Editable summary, provider disclosure, explicit consent before anything is shared |
+| Results | `/results/[id]` | Live replay of each provider's audited journey, then sortable quotes, feature matrix, details, retry and delete |
+
+Every screen is designed for 390 × 844 (Android) and 1440 × 900 (desktop) without page-level scrolling. Long content uses intentional, contained scroll regions. The footer stays reachable when the mobile keyboard is open.
+
+## Architecture
+
+```
+src/
+  app/                    App Router pages and route handlers
+    api/comparisons       POST (validate → orchestrate → persist), GET, DELETE, retry
+    api/registration      Registration lookup endpoint (null provider until licensed)
+  components/
+    ui/                   Design system primitives (button, field, segmented, choice card, dialog…)
+    landing/ compare/ results/
+  lib/
+    application/          Zod schemas (single source of truth), labels, demo profile, client draft store
+    providers/            Adapter contract, registry of fictional providers, orchestrator
+      adapters/           demo-insurer, browser-workflow (worker-backed), not-connected
+    quotes/               Demo pricing engine, coverage scoring, sorting, landing preview data
+    storage/              ComparisonStore: in-memory and Supabase implementations
+    vehicles/             Compact Australian make/model/variant reference data
+supabase/migrations/      Schema with service-role-only RLS and a purge function
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Provider adapter model
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Each provider implements `ProviderAdapter` and receives the same standardised `QuoteRequest`. Results are normalised to `ProviderResult` with one of:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`NOT_CONNECTED · READY · SUBMITTED · QUOTING · QUOTED · REFERRED · DECLINED · ERROR · MANUAL_ACTION_REQUIRED`
 
-## Learn More
+Integration methods: official insurer API, authorised broker, contractually approved browser workflow (runs in a separate worker; never bypasses CAPTCHA, identity checks or anti-automation controls), and human-assisted referral. Every result carries an auditable journey.
 
-To learn more about Next.js, take a look at the following resources:
+### Modes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `COVERWISE_MODE=demo` (default): fictional providers, deterministic synthetic pricing seeded from the application, every provider state exercised.
+- `COVERWISE_MODE=live`: only adapters with real credentials connect; everything else reports `NOT_CONNECTED`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Development
 
-## Deploy on Vercel
+```bash
+pnpm install
+pnpm dev        # http://localhost:3000
+pnpm lint
+pnpm build && pnpm start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Node 22+, pnpm 10. No environment variables are required for the demonstration. See `.env.example`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment (Vercel)
+
+1. Import the GitHub repository in Vercel. Framework preset: Next.js (auto-detected). `vercel.json` pins functions to `syd1`.
+2. Optional environment variables (Project → Settings → Environment Variables): `NEXT_PUBLIC_SITE_URL`, `COVERWISE_MODE`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
+3. Deploy. The build is verified with `pnpm build` (Next.js 16, Cache Components, static shell for every page, partial prerender for results).
+
+### Supabase (optional persistence)
+
+Run `supabase/migrations/0001_init.sql` against your project, then set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (server-only). Tables are service-role only — RLS is enabled with no anon/authenticated policies. Demonstration sessions expire after 30 days; `purge_expired_comparisons()` performs the deletion and can be scheduled with pg_cron. Customers can delete their session at any time from the results screen.
+
+Without Supabase, the app uses an in-memory store and the browser keeps a session-scoped copy of its own comparison, so the demo works fully on serverless.
+
+## Security and data handling
+
+- Server-side validation of every submission with the same Zod schemas used client-side.
+- Nothing is sent to providers until explicit consent is recorded with the submission.
+- Minimal collection: no name, email or phone is required for a demonstration comparison.
+- No personal data in logs. Security headers set in `next.config.ts`.
+- Secrets are read from environment variables only; never exposed with a `NEXT_PUBLIC_` prefix.
