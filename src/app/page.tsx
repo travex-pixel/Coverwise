@@ -24,8 +24,20 @@ export default function LandingPage() {
           <Hero />
         </div>
         <div className="mt-4 flex min-h-0 flex-1 items-start lg:mt-0 lg:flex-none lg:items-center">
-          <div className="rise flex max-h-full w-full min-h-0" style={{ animationDelay: "160ms" }}>
+          <div className="rise relative flex max-h-full w-full min-h-0" style={{ animationDelay: "160ms" }}>
             <ProductPreview />
+            {/* Showroom floor: a soft reflection beneath the panel */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-6 top-full hidden h-24 lg:block"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgb(17 21 18 / 0.14) 0%, rgb(17 21 18 / 0.04) 45%, transparent 100%)",
+                filter: "blur(10px)",
+                transform: "translateY(6px) scaleX(0.96)",
+                borderRadius: "0 0 48px 48px",
+              }}
+            />
           </div>
         </div>
       </main>

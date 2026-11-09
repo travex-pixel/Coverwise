@@ -86,7 +86,13 @@ export function ResultsView() {
           </Badge>
         </div>
         <div className="ml-auto flex items-center gap-1.5 md:ml-0">
-          <Button variant="ghost" size="sm" className="text-muted hover:text-danger" onClick={() => setDeleteOpen(true)}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted hover:text-danger"
+            aria-label="Delete my data"
+            onClick={() => setDeleteOpen(true)}
+          >
             <Trash2 className="size-3.5" strokeWidth={2} aria-hidden />
             <span className="hidden sm:inline">Delete my data</span>
           </Button>
