@@ -24,7 +24,7 @@ export default function LandingPage() {
 
         {/* Artwork + proof card */}
         <div className="relative mt-1 flex min-h-0 flex-1 flex-col justify-center gap-2 md:gap-6 lg:mt-0 lg:h-[min(640px,76vh)] lg:flex-none lg:justify-center lg:gap-0">
-          <div className="rise relative min-h-0 flex-1 lg:flex-none" style={{ animationDelay: "140ms" }}>
+          <div className="rise relative min-h-0 flex-1 md:h-[min(440px,44vh)] md:flex-none lg:h-auto" style={{ animationDelay: "140ms" }}>
             {/* Mobile: the whole car, framed as a band on its wash. Cropped only above and below. */}
             <div className="relative -mx-4 h-full min-h-[120px] max-h-[230px] md:max-h-[440px] lg:hidden">
               <HeroArt priority fill sizes="100vw" className="object-cover object-[50%_60%]" />
