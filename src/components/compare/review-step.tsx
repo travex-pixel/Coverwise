@@ -52,7 +52,7 @@ function SummaryCard({
           alt=""
           aria-hidden
           sizes="200px"
-          className="pointer-events-none absolute -right-6 -top-2 w-[200px] max-w-none opacity-80 sm:-right-4"
+          className="pointer-events-none absolute -bottom-5 -right-7 hidden w-[170px] max-w-none opacity-60 sm:block"
           draggable={false}
         />
       )}

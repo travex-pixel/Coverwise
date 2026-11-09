@@ -15,8 +15,11 @@ export default function LandingPage() {
 
       <main className="relative flex min-h-0 flex-1 flex-col px-4 pb-2 pt-1 sm:px-8 lg:grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:gap-4 lg:px-12 lg:pb-4">
         {/* Copy */}
-        <div className="relative z-10 shrink-0 lg:pb-10">
+        <div className="relative z-10 shrink-0 lg:pb-6">
           <Hero />
+          <div className="rise mt-8 hidden w-[372px] lg:block lg:[@media(max-height:820px)]:hidden" style={{ animationDelay: "260ms" }}>
+            <QuoteStrip />
+          </div>
         </div>
 
         {/* Artwork + proof card */}
@@ -31,11 +34,11 @@ export default function LandingPage() {
               />
             </div>
             {/* Desktop: full composition */}
-            <div className="relative hidden w-[104%] lg:block lg:-mr-[4%] lg:-translate-y-[6%]">
+            <div className="relative hidden w-[106%] lg:block lg:-mr-[6%]">
               <HeroArt priority sizes="(min-width: 1024px) 60vw, 100vw" />
             </div>
           </div>
-          <div className="rise relative z-10 mt-1 w-full lg:absolute lg:-bottom-4 lg:-left-6 lg:mt-0 lg:w-[332px]" style={{ animationDelay: "260ms" }}>
+          <div className="rise relative z-10 mt-1 w-full lg:hidden" style={{ animationDelay: "260ms" }}>
             <QuoteStrip />
           </div>
         </div>
