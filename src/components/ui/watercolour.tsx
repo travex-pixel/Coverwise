@@ -16,8 +16,6 @@ const TONE: Record<Tone, string> = {
   silver: "#D7DAD5",
 };
 
-let idCounter = 0;
-
 export function Wash({
   tone = "sage",
   className,
@@ -31,7 +29,8 @@ export function Wash({
   seed?: number;
   shape?: "blob" | "stroke" | "pool";
 }) {
-  const id = React.useMemo(() => `wash-${(idCounter = (idCounter + 1) % 10_000)}-${seed}`, [seed]);
+  const reactId = React.useId().replace(/[^a-zA-Z0-9]/g, "");
+  const id = `wash-${reactId}-${seed}`;
   const d =
     shape === "stroke"
       ? "M20 110 C120 70 260 72 380 86 C470 96 560 92 600 112 C560 134 470 140 380 136 C260 132 120 140 20 126 Z"
